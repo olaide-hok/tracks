@@ -1,6 +1,6 @@
 import {Tabs} from 'expo-router';
 import {StatusBar} from 'expo-status-bar';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 export default function TracksLayout() {
     return (
@@ -9,7 +9,6 @@ export default function TracksLayout() {
             <Tabs
                 screenOptions={{
                     animation: 'none',
-                    headerShown: false,
                 }}>
                 <Tabs.Screen
                     name="trackList"
@@ -17,9 +16,9 @@ export default function TracksLayout() {
                         title: 'Tracks',
                         headerShown: false,
                         tabBarIcon: ({color}) => (
-                            <MaterialIcons
+                            <FontAwesome
                                 size={28}
-                                name="house"
+                                name="th-list"
                                 color={color}
                             />
                         ),
@@ -28,44 +27,22 @@ export default function TracksLayout() {
                 <Tabs.Screen
                     name="trackCreate"
                     options={{
-                        headerShown: false,
-                        title: 'Track Create',
+                        title: 'Add Track',
                         tabBarIcon: ({color}) => (
-                            <MaterialIcons
-                                size={28}
-                                name="house"
-                                color={color}
-                            />
+                            <FontAwesome size={28} name="plus" color={color} />
                         ),
                     }}
                 />
                 <Tabs.Screen
                     name="account"
                     options={{
-                        headerShown: false,
                         title: 'Account',
+                        headerShown: true,
                         tabBarIcon: ({color}) => (
-                            <MaterialIcons
-                                size={28}
-                                name="house"
-                                color={color}
-                            />
+                            <FontAwesome size={28} name="gear" color={color} />
                         ),
                     }}
                 />
-                {/* <Tabs.Screen
-                name="index"
-                options={{
-                    title: 'Home',
-                    tabBarIcon: ({color}) => (
-                        <MaterialIcons
-                            size={28}
-                            name="house.fill"
-                            color={color}
-                        />
-                    ),
-                }}
-            /> */}
             </Tabs>
         </>
     );
