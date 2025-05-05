@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import createDataContext from './createDataContext';
 import trackerApi from '../api/tracker';
 import {router} from 'expo-router';
+import {Platform} from 'react-native';
 
 const authReducer = (state, action) => {
     switch (action.type) {
@@ -19,7 +20,12 @@ const authReducer = (state, action) => {
 };
 
 const tryLocalSignin = (dispatch) => async () => {
-    const token = await AsyncStorage.getItem('token');
+    let token;
+    if (Platform.OS === 'web') {
+        token = localStorage.getItem('token');
+    } else {
+        token = await AsyncStorage.getItem('token');
+    }
     if (token) {
         dispatch({type: 'signin', payload: token});
         router.replace('(tracks)/trackList');
@@ -35,13 +41,14 @@ const clearErrorMessage = (dispatch) => () => {
 const signup =
     (dispatch) =>
     async ({email, password}) => {
-        console.log(email, password);
         try {
             const response = await trackerApi.post('/signup', {
                 email,
                 password,
             });
-            console.log(response.data);
+            if (Platform.OS === 'web') {
+                localStorage.setItem('token', response.data.token);
+            }
             await AsyncStorage.setItem('token', response.data.token);
             dispatch({type: 'signin', payload: response.data.token});
 
@@ -63,7 +70,6 @@ const signin =
                 email,
                 password,
             });
-            console.log('token data', response.data);
             await AsyncStorage.setItem('token', response.data.token);
             dispatch({type: 'signin', payload: response.data.token});
             router.replace('(tracks)/trackList');
